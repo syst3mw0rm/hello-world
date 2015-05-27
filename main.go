@@ -21,7 +21,7 @@ func main() {
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/debug", debug)
 	http.HandleFunc("/record", record_tx)
-	http.HandleFunc("/all_tx", record_tx)
+	http.HandleFunc("/all_tx", all_tx)
 	http.ListenAndServe(":8000", nil)
 }
 
