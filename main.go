@@ -97,6 +97,6 @@ func all_tx(w http.ResponseWriter, r *http.Request) {
 		}
 
 		s, _ := json.Marshal(record)
-		fmt.Fprint(w, s)
+		fmt.Fprintf(w, "%s\n", s)
 	}
 }
