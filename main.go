@@ -63,7 +63,7 @@ func all_tx(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	defer db.Close()
-
+	Fmt.Fprintln("querying all data...")
 	rows, err := db.Query("SELECT * FROM tx;")
 	if err != nil {
 		panic(err)
@@ -97,6 +97,6 @@ func all_tx(w http.ResponseWriter, r *http.Request) {
 		}
 
 		s, _ := json.Marshal(record)
-		fmt.Fprintf(w, "%s\n", s)
+		fmt.Fprint(w, s)
 	}
 }
