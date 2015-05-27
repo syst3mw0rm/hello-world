@@ -9,10 +9,10 @@ import (
 )
 
 var (
-	DB_USER     = os.Getenv("DB_USER")
+	DB_USER     = os.Getenv("DB_ENV_DB_USER")
 	DB_PASSWORD = os.Getenv("DB_PASSWORD")
-	DB_NAME     = os.Getenv("DB_NAME")
-	DB_HOST     = os.Getenv("DB_HOST")
+	DB_NAME     = os.Getenv("DB_ENV_DB_NAME")
+	DB_HOST     = os.Getenv("DB_PORT_5432_TCP_ADDR")
 )
 
 func main() {
