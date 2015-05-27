@@ -42,8 +42,8 @@ func record_tx(w http.ResponseWriter, r *http.Request) {
 
 	var lastInsertId int
 
-	fromUser := req.FormValue("from_user")
-	toUser := req.FormValue("to_user")
+	fromUser := r.FormValue("from_user")
+	toUser := r.FormValue("to_user")
 
 	err = db.QueryRow("INSERT INTO tx(from_user, to_user) values ($1, $2) returning id;", fromUser, toUser).Scan(&lastInsertId)
 	if err != nil {
