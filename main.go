@@ -36,7 +36,11 @@ func record_tx(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var lastInsertId int
-	err = db.QueryRow("INSERT INTO tx(from_user, to_user) values ('a', 'b') returning id;").Scan(&lastInsertId)
+
+	fromUser := req.FormValue("from_user")
+	toUser := req.FormValue("to_user")
+
+	err = db.QueryRow("INSERT INTO tx(from_user, to_user) values ($1, $2) returning id;", fromUser, toUser).Scan(&lastInsertId)
 	if err != nil {
 		panic(err)
 	}
