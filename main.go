@@ -17,12 +17,17 @@ var (
 
 func main() {
 	http.HandleFunc("/", hello)
+	http.HandleFunc("/debug", debug)
 	http.HandleFunc("/record", record_tx)
+	http.HandleFunc("/all_tx", record_tx)
 	http.ListenAndServe(":8000", nil)
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "Hello World")
+}
+
+func debug(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, os.Environ())
 }
 
@@ -46,4 +51,21 @@ func record_tx(w http.ResponseWriter, r *http.Request) {
 	}
 
 	fmt.Println("last inserted id =", lastInsertId)
+}
+
+func all_tx(w http.ResponseWriter, r *http.Request) {
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s host=%s sslmode=disable",
+		DB_USER, DB_PASSWORD, DB_NAME, DB_HOST)
+	db, err := sql.Open("postgres", dbinfo)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM tx;")
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Fprintf(w, "%#v\n", rows)
 }
