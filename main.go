@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -11,5 +12,6 @@ func main() {
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "Hello World")
+	fmt.Fprintln(w, "Hello World")
+	fmt.Fprintln(w, os.Environ())
 }
