@@ -2,10 +2,12 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
-	_ "github.com/lib/pq"
 	"net/http"
 	"os"
+
+	_ "github.com/lib/pq"
 )
 
 var (
@@ -66,6 +68,35 @@ func all_tx(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
+	defer rows.Close()
 
-	fmt.Fprintf(w, "%#v\n", rows)
+	columns, err := rows.Columns()
+	if err != nil {
+		panic(err)
+	}
+
+	scanArgs := make([]interface{}, len(columns))
+	values := make([]interface{}, len(columns))
+
+	for i := range values {
+		scanArgs[i] = &values[i]
+	}
+
+	for rows.Next() {
+		err = rows.Scan(scanArgs...)
+		if err != nil {
+			panic(err)
+		}
+
+		record := make(map[string]interface{})
+
+		for i, col := range values {
+			if col != nil {
+				record[columns[i]] = fmt.Sprintf("%s", col)
+			}
+		}
+
+		s, _ := json.Marshal(record)
+		fmt.Fprintf(w, "%s\n", s)
+	}
 }
