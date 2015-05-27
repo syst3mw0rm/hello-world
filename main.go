@@ -10,7 +10,7 @@ import (
 
 var (
 	DB_USER     = os.Getenv("DB_ENV_DB_USER")
-	DB_PASSWORD = os.Getenv("DB_PASSWORD")
+	DB_PASSWORD = os.Getenv("DB_ENV_DB_PASSWORD")
 	DB_NAME     = os.Getenv("DB_ENV_DB_NAME")
 	DB_HOST     = os.Getenv("DB_PORT_5432_TCP_ADDR")
 )
@@ -36,7 +36,7 @@ func record_tx(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 
 	var lastInsertId int
-	err = db.QueryRow("INSERT INTO tx(from_user, to_user) values ('a', 'b') returning uid;").Scan(&lastInsertId)
+	err = db.QueryRow("INSERT INTO tx(from_user, to_user) values ('a', 'b') returning id;").Scan(&lastInsertId)
 	if err != nil {
 		panic(err)
 	}
